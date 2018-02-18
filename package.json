@@ -11,5 +11,8 @@
     "url": "\u0016https://github.com/YurbIy/Blackjack.git"
   },
   "author": "Iurii Novikov",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "readline": "^1.3.0"
+  }
 }
