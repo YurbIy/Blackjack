@@ -1,14 +1,10 @@
 const readline = require('readline');
+const getPile = require('./getPile');
 
 const GREETING = 'Hello, there! Here is console Blackjack.'
 
-const ranges = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-
-const suits = ['♥', '♦', '♣', '♠'];
-
-var pile = [];
-suits.map(suit => ranges.map((range) => range + suit)).map((value) => pile = pile.concat(value));
-
+const pile = getPile();
+console.log(pile);
 const random = () => {
     return Math.round(Math.random() * 51);
 }
