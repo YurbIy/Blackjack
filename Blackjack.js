@@ -45,15 +45,19 @@ const getCardWeigth = (card) => {
   }
 }
 
-const getHandWeight = (hand) => {
-  var result = 0;
-  hand.map((card) => {
-    if(card[0] === 'A' && (result + 11) > 21){
-      card[0] = 'B';
+const sum = (array) => array.length > 0 ? array.reduce(function(previousValue, currentValue) {
+  return previousValue + currentValue;
+}) : 0;
+
+const getHandWeight = (set) => {
+  let weightArray = set.map(card => getCardWeigth(card));
+  if(sum(weightArray) > 21) {
+    const aceIndex =  weightArray.indexOf(11);
+    if(aceIndex !== -1) {
+      weightArray[aceIndex] = 1;
+    }
   }
-    result += getCardWeigth(card);
-  });
-  return result;
+  return sum(weightArray);
 }
 
 const finalCount = () => {
@@ -66,9 +70,23 @@ const finalCount = () => {
   console.log('Your total score is:' + playersScore);
   console.log('Croupier\'s total score is:' + croupiersScore);
 
-  if (playersScore > 21
-    || 21 - playersScore > 21 - croupiersScore) console.log('You lose!');
-  else console.log('You win!!!');
+  if (playersScore > 21) {
+    console.log('You lose!');
+  } else if (playersScore === croupiersScore){
+    console.log('Draw!');
+  } else if (playersScore === 21){
+    console.log('You win!!!');
+  }
+  else {
+    if (croupiersScore > 21) {
+      console.log('You win!!!');
+    } else if (21 - playersScore > 21 - croupiersScore) {
+      console.log('You lose!');
+    }
+    else {
+      console.log('You win!!!');
+    }
+  }
 }
 
 const rl = readline.createInterface({
@@ -77,9 +95,17 @@ const rl = readline.createInterface({
 });
 
 while (hand.length < 2) hand = takeCard(hand);
-while (croupiersHand.length < 2) croupiersHand = takeCard(croupiersHand);
+while (getHandWeight(croupiersHand) < 17) croupiersHand = takeCard(croupiersHand);
 
-console.log('Here is your hand: ' + hand + '\nHere is croupier\'s first card:' + croupiersHand[0] + '\nOne more card?(y/n)');
+console.log('Here is your hand: ' + hand + '\nHere is croupier\'s first card:' + croupiersHand[0]);
+
+if(getHandWeight(hand) < 21) {
+  console.log('One more card?(y/n)')
+} else {
+  finalCount();
+  rl.close();
+  return;
+}
 
 rl.on('line', (answer) => {
   if(answer.toLowerCase().trim() === 'y') {
@@ -102,6 +128,3 @@ rl.on('line', (answer) => {
     rl.prompt();
   }
 });
-
-
-
