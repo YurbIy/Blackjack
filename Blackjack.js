@@ -1,9 +1,10 @@
 const readline = require('readline');
 const getPile = require('./Pile');
 const getHandWeight = require('./ScoreCounter')
-const readStats = require('./FileProcessor');
-const writeResult = require('./FileProcessor')
+const readStats = require('./FileProcessor').readStats;
+const writeResult = require('./FileProcessor').writeResult;
 const GREETING = 'Hello, there! Here is console Blackjack.'
+const moment = require('moment');
 
 const pile = getPile();
 const random = () => {
@@ -50,8 +51,14 @@ const finalCount = () => {
     }
   }
   console.log(result);
-  writeResult(result);
-  console.log(readStat());
+  const text = readStats();
+  writeResult(moment().format('YY-MM-DD HH:mm:ss') + ' '
+    + result
+    + ' Your hand: ' + hand + '=' + playersScore
+    + ' Croupier\'s hand: ' + croupiersHand
+    + '=' + croupiersScore);
+  console.log('Statistics:');
+  console.log(readStats());
 }
 
 const rl = readline.createInterface({

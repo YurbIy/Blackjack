@@ -5,7 +5,7 @@ const writeResult = (result) => {
 }
 
 const readStats = () => {
-  return fs.readFileSync('stats.txt');
+  return fs.readFileSync('stats.txt', 'utf8');
 }
 
 module.exports.writeResult = writeResult;
