@@ -1,10 +1,11 @@
 const readline = require('readline');
-const getPile = require('./getPile');
-
+const getPile = require('./Pile');
+const getHandWeight = require('./ScoreCounter')
+const readStats = require('./FileProcessor');
+const writeResult = require('./FileProcessor')
 const GREETING = 'Hello, there! Here is console Blackjack.'
 
 const pile = getPile();
-console.log(pile);
 const random = () => {
     return Math.round(Math.random() * 51);
 }
@@ -19,43 +20,6 @@ const takeCard = (hand) => {
   return hand;
 }
 
-const isNumeric = (value) => {
-  return !isNaN(parseFloat(value)) && isFinite(value);
-}
-
-const getCardWeigth = (card) => {
-  const value = card[0];
-  if (isNumeric(card[0])) return parseInt(card);
-  switch (value) {
-    case 'A':
-      return 11;
-      break;
-    case 'B':
-      return 1;
-      break;
-    case 'J':
-    case 'Q':
-    case 'K':
-      return 10;
-      break;
-  }
-}
-
-const sum = (array) => array.length > 0 ? array.reduce(function(previousValue, currentValue) {
-  return previousValue + currentValue;
-}) : 0;
-
-const getHandWeight = (set) => {
-  let weightArray = set.map(card => getCardWeigth(card));
-  if(sum(weightArray) > 21) {
-    const aceIndex =  weightArray.indexOf(11);
-    if(aceIndex !== -1) {
-      weightArray[aceIndex] = 1;
-    }
-  }
-  return sum(weightArray);
-}
-
 const finalCount = () => {
   const playersScore = getHandWeight(hand);
   const croupiersScore = getHandWeight(croupiersHand);
@@ -66,23 +30,28 @@ const finalCount = () => {
   console.log('Your total score is:' + playersScore);
   console.log('Croupier\'s total score is:' + croupiersScore);
 
+  let result;
+
   if (playersScore > 21) {
-    console.log('You lose!');
+    result = 'You lose!';
   } else if (playersScore === croupiersScore){
-    console.log('Draw!');
+    result = 'Draw!';
   } else if (playersScore === 21){
-    console.log('You win!!!');
+    result = 'You win!!!';
   }
   else {
     if (croupiersScore > 21) {
-      console.log('You win!!!');
+      result = 'You win!!!';
     } else if (21 - playersScore > 21 - croupiersScore) {
-      console.log('You lose!');
+      result = 'You lose!';
     }
     else {
-      console.log('You win!!!');
+      result = 'You win!!!';
     }
   }
+  console.log(result);
+  writeResult(result);
+  console.log(readStat());
 }
 
 const rl = readline.createInterface({

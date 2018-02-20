@@ -10,6 +10,7 @@ const getPile = () => {
   var pile = [];
 
   suits.map(suit => ranges.map((range) => range + suit)).map((value) => pile = pile.concat(value));
+  return pile;
 }
 
 module.exports = getPile;
