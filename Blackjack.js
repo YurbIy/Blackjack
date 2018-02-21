@@ -57,6 +57,7 @@ const finalCount = () => {
     + ' Your hand: ' + hand + '=' + playersScore
     + ' Croupier\'s hand: ' + croupiersHand
     + '=' + croupiersScore);
+  console.log('==============================');
   console.log('Statistics:');
   console.log(readStats());
 }
